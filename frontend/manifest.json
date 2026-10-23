@@ -1,0 +1,25 @@
+{
+  "name": "Photo Studio",
+  "short_name": "Photo Studio",
+  "description": "Premium AI Face Analyzer & Photo Editor — enhance, analyze, filter, and optimize your photos.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fdf7ff",
+  "theme_color": "#c084fc",
+  "id": "/",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c084fc'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='bold'%3EPS%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c084fc'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='bold'%3EPS%3C/text%3E%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

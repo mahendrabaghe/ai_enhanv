@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#c084fc" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="description" content="Premium AI Face Analyzer & Photo Studio — enhance, analyze, and edit your photos." />
+  <title>Photo Studio — AI Face Analyzer &amp; Photo Editor</title>
+
+  <!-- API configuration (set via data attribute or JS before app loads) -->
+  <script id="api-config" data-api-base="" type="application/json"></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c084fc'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='bold'%3EPS%3C/text%3E%3C/svg%3E" />
+
+  <!-- Touch icons for PWA -->
+  <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23c084fc'/%3E%3Ctext x='50' y='65' font-size='55' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='bold'%3EPS%3C/text%3E%3C/svg%3E" />
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- Top header -->
+    <header class="header">
+      <div class="brand">
+        <div class="brand-mark">PS</div>
+        <div class="brand-text">Photo Studio</div>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn--icon theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
+        <button class="btn btn--icon" id="settingsBtn" aria-label="Settings" title="settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- Bottom navigation (mobile) -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" data-section="home" aria-label="Home" aria-current="true">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav-item" data-section="face" aria-label="Face AI">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"></circle><path d="M8.21 13.82A7 7 0 0 1 20 14c0-.7-.11-1.39-.33-2.05"></path></svg>
+        <span>Face AI</span>
+      </button>
+      <button class="nav-item" data-section="enhance" aria-label="Enhance">
+        <svg viewBox="0 0 24 24"><path d="M3 3v18h18V3H3z"></path><polyline points="18 18 12 12 6 18"></polyline></svg>
+        <span>Enhance</span>
+      </button>
+      <button class="nav-item" data-section="filters" aria-label="Filters">
+        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="16" y1="3" x2="16" y2="7"></line><line x1="12" y1="3" x2="12" y2="7"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="4" y1="3" x2="4" y2="7"></line></svg>
+        <span>Filters</span>
+      </button>
+      <button class="nav-item" data-section="settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-1A1.65 1.65 0 0 0 9 14a1.65 1.65 0 0 0-1-1.51l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33h1a1.65 1.65 0 0 0 1-1.51l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82-.33h1a1.65 1.65 0 0 0 1.82 1.51l-.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1-1.51v-1a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 1 1 1.51z"></path></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+
+    <main class="hero" id="mainContent">
+      <!-- Home section -->
+      <section id="section-home" class="section" aria-label="Home">
+        <h1 class="hero-title">Your photos, elevated.</h1>
+        <p class="hero-sub">Analyze faces, enhance images, apply beautiful filters, and optimize for sharing — all in one premium photo studio.</p>
+
+        <div class="feature-grid">
+          <div class="feature-card" data-open="face">
+            <div class="feature-icon">👁️</div>
+            <div class="feature-title">Face AI Analyzer</div>
+            <p class="feature-desc">Detect faces, view landmarks, and check image quality. Your photos stay private.</p>
+          </div>
+          <div class="feature-card" data-open="enhance">
+            <div class="feature-icon">✨</div>
+            <div class="feature-title">Photo Enhancer</div>
+            <p class="feature-desc">Standard &amp; HD enhancement, upscaling, and AI super-resolution.</p>
+          </div>
+          <div class="feature-card" data-open="filters">
+            <div class="feature-icon">🎨</div>
+            <div class="feature-title">Filters Studio</div>
+            <p class="feature-desc">Warm, cool, vintage, cinematic, B&amp;W and more — with adjustable intensity.</p>
+          </div>
+          <div class="feature-card" data-open="optimize">
+            <div class="feature-icon">📦</div>
+            <div class="feature-title">Image Optimizer</div>
+            <p class="feature-desc">Compress and resize JPG, PNG &amp; WebP with size-reduction preview.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Face AI section -->
+      <section id="section-face" class="section hidden" aria-label="Face AI Analyzer">
+        <div class="card card--padded">
+          <h2 class="hero-title" style="font-size:var(--fs-xl); margin-bottom:var(--space-md);">Face AI Analyzer</h2>
+          <p class="upload-hint" style="margin-bottom:var(--space-lg);">Capture a photo or upload from your gallery to analyze faces.</p>
+
+          <div class="camera-container" id="faceCameraContainer">
+            <video class="camera-video" id="faceVideo" playsinline muted></video>
+            <div class="camera-overlay" id="faceCameraOverlay">
+              <div class="camera-hint">Point camera at a face</div>
+            </div>
+            <div class="camera-facing" id="faceCameraFacing">Rear</div>
+            <div class="camera-controls">
+              <button class="btn btn--icon camera-btn--switch" id="faceSwitchCam" aria-label="Switch camera">🔄</button>
+              <button class="btn camera-btn" id="faceCapture">📷</button>
+            </div>
+          </div>
+
+          <div class="upload-area" id="faceUploadArea">
+            <input type="file" class="input-file" id="faceFileInput" accept="image/*" />
+            <div class="upload-content">
+              <div class="upload-icon">📁</div>
+              <div class="upload-label">Upload from gallery</div>
+              <div class="upload-hint">JPG, PNG, WebP</div>
+            </div>
+          </div>
+
+          <div class="image-actions">
+            <button class="btn btn--primary btn--small" id="faceAnalyzeBtn" disabled>Analyze Face</button>
+            <button class="btn btn--outline btn--small" id="faceResetBtn" style="display:none;">Reset</button>
+          </div>
+
+          <div id="facePreview" class="image-viewer" style="display:none;"></div>
+
+          <div id="faceResults" class="face-results hidden"></div>
+
+          <div id="faceStatus" style="margin-top:var(--space-lg); text-align:center; min-height:1.5rem; font-size:var(--fs-sm); color:var(--color-text-muted);"></div>
+        </div>
+      </section>
+
+      <!-- Enhance section -->
+      <section id="section-enhance" class="section hidden" aria-label="Photo Enhancer">
+        <div class="card card--padded">
+          <h2 class="hero-title" style="font-size:var(--fs-xl); margin-bottom:var(--space-md);">Photo Enhancer</h2>
+          <p class="upload-hint" style="margin-bottom:var(--space-lg);">Upload a photo to enhance brightness, contrast, sharpness, and resolution.</p>
+
+          <div class="upload-area" id="enhanceUploadArea">
+            <input type="file" class="input-file" id="enhanceFileInput" accept="image/*" />
+            <div class="upload-content">
+              <div class="upload-icon">📷</div>
+              <div class="upload-label">Upload or take a photo</div>
+              <div class="upload-hint">JPG, PNG, WebP</div>
+            </div>
+          </div>
+
+          <div id="enhancePreview" class="image-viewer" style="display:none;"></div>
+
+          <div id="enhanceControls" class="slider-row hidden" style="margin-top:var(--space-lg); flex-wrap:wrap;">
+            <div>
+              <div class="input-group">
+                <label class="input-label">Brightness</label>
+                <div class="slider-row">
+                  <input type="range" id="enhBrightness" min="50" max="150" value="100" />
+                  <span class="slider-value" id="enhBrightnessVal">100%</span>
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Contrast</label>
+                <div class="slider-row">
+                  <input type="range" id="enhContrast" min="50" max="150" value="100" />
+                  <span class="slider-value" id="enhContrastVal">100%</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="input-group">
+                <label class="input-label">Sharpness</label>
+                <div class="slider-row">
+                  <input type="range" id="enhSharpness" min="0" max="200" value="100" />
+                  <span class="slider-value" id="enhSharpnessVal">100%</span>
+                </div>
+              </div>
+              <div class="input-group">
+                <label class="input-label">Denoise</label>
+                <div class="slider-row">
+                  <input type="range" id="enhDenoise" min="0" max="100" value="0" />
+                  <span class="slider-value" id="enhDenoiseVal">0%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="enhanceTypeButtons" style="margin-top:var(--space-lg); display:flex; gap:var(--space-md); flex-wrap:wrap; justify-content:center;">
+            <button class="btn btn--primary" data-type="standard">Standard</button>
+            <button class="btn btn--outline" data-type="hd">HD</button>
+            <button class="btn btn--outline" data-type="upscale2x">2× Upscale</button>
+            <button class="btn btn--outline" data-type="upscale4x">4× Upscale</button>
+          </div>
+
+          <div class="image-actions" style="margin-top:var(--space-lg);">
+            <button class="btn btn--primary btn--full" id="enhanceBtn" disabled>Enhance Image</button>
+            <button class="btn btn--outline btn--full" id="enhanceDownloadBtn" style="display:none;">Download</button>
+          </div>
+
+          <div id="enhanceInfo" style="margin-top:var(--space-lg); text-align:center; font-size:var(--fs-sm); color:var(--color-text-muted);"></div>
+          <div id="enhanceStatus" style="margin-top:var(--space-lg); text-align:center; min-height:1.5rem; font-size:var(--fs-sm); color:var(--color-text-muted);"></div>
+        </div>
+      </section>
+
+      <!-- Filters section -->
+      <section id="section-filters" class="section hidden" aria-label="Filters Studio">
+        <div class="card card--padded">
+          <h2 class="hero-title" style="font-size:var(--fs-xl); margin-bottom:var(--space-md);">Filters Studio</h2>
+          <p class="upload-hint" style="margin-bottom:var(--space-lg);">Apply artistic filters with adjustable intensity.</p>
+
+          <div class="upload-area" id="filterUploadArea">
+            <input type="file" class="input-file" id="filterFileInput" accept="image/*" />
+            <div class="upload-content">
+              <div class="upload-icon">🎨</div>
+              <div class="upload-label">Upload a photo</div>
+              <div class="upload-hint">JPG, PNG, WebP</div>
+            </div>
+          </div>
+
+          <div id="filterPreview" class="image-viewer" style="display:none;"></div>
+
+          <div id="filterControls" class="hidden" style="margin-top:var(--space-lg);">
+            <div class="input-group">
+              <label class="input-label" style="display:flex; justify-content:space-between;">
+                <span>Filter</span>
+                <span class="badge" id="filterNameBadge">Natural</span>
+              </label>
+              <div style="display:flex; gap:var(--space-md); flex-wrap:wrap;" id="filterButtons">
+                <button class="btn btn--primary filter-chip" data-filter="natural">Natural</button>
+                <button class="btn btn--outline filter-chip" data-filter="warm">Warm</button>
+                <button class="btn btn--outline filter-chip" data-filter="cool">Cool</button>
+                <button class="btn btn--outline filter-chip" data-filter="vintage">Vintage</button>
+                <button class="btn btn--outline filter-chip" data-filter="cinematic">Cinematic</button>
+                <button class="btn btn--outline filter-chip" data-filter="bw">Black &amp; White</button>
+                <button class="btn btn--outline filter-chip" data-filter="brightness">Brightness</button>
+                <button class="btn btn--outline filter-chip" data-filter="contrast">Contrast</button>
+                <button class="btn btn--outline filter-chip" data-filter="saturation">Saturation</button>
+                <button class="btn btn--outline filter-chip" data-filter="sharpness">Sharpness</button>
+                <button class="btn btn--outline filter-chip" data-filter="blur">Blur</button>
+              </div>
+            </div>
+            <div class="input-group" style="margin-top:var(--space-md);">
+              <label class="input-label">Intensity <span class="slider-value" id="filterIntensityVal">100%</span></label>
+              <input type="range" id="filterIntensity" min="0" max="100" value="100" />
+            </div>
+          </div>
+
+          <div class="image-actions" style="margin-top:var(--space-lg);">
+            <button class="btn btn--primary btn--full" id="filterBtn" disabled>Apply Filter</button>
+            <button class="btn btn--outline btn--full" id="filterDownloadBtn" style="display:none;">Download</button>
+            <button class="btn btn--ghost btn--full" id="filterResetBtn" style="display:none;">Reset</button>
+          </div>
+
+          <div id="filterStatus" style="margin-top:var(--space-lg); text-align:center; min-height:1.5rem; font-size:var(--fs-sm); color:var(--color-text-muted);"></div>
+        </div>
+      </section>
+
+      <!-- Image Optimizer section -->
+      <section id="section-optimize" class="section hidden" aria-label="Image Optimizer">
+        <div class="card card--padded">
+          <h2 class="hero-title" style="font-size:var(--fs-xl); margin-bottom:var(--space-md);">Image Optimizer</h2>
+          <p class="upload-hint" style="margin-bottom:var(--space-lg);">Compress and resize images for the web and social media.</p>
+
+          <div class="upload-area" id="optimizeUploadArea">
+            <input type="file" class="input-file" id="optimizeFileInput" accept="image/*" />
+            <div class="upload-content">
+              <div class="upload-icon">📦</div>
+              <div class="upload-label">Upload a photo</div>
+              <div class="upload-hint">JPG, PNG, WebP</div>
+            </div>
+          </div>
+
+          <div id="optimizePreview" class="image-viewer" style="display:none;"></div>
+
+          <div id="optimizeControls" class="hidden" style="margin-top:var(--space-lg);">
+            <div class="input-group">
+              <label class="input-label" style="display:flex; justify-content:space-between;">
+                <span>Format</span>
+                <span class="badge" id="optFormatBadge">WebP</span>
+              </label>
+              <div style="display:flex; gap:var(--space-md); flex-wrap:wrap;" id="optFormatButtons">
+                <button class="btn btn--primary format-chip" data-format="webp">WebP</button>
+                <button class="btn btn--outline format-chip" data-format="jpeg">JPEG</button>
+                <button class="btn btn--outline format-chip" data-format="png">PNG</button>
+              </div>
+            </div>
+            <div class="input-group">
+              <label class="input-label">Quality <span class="slider-value" id="optQualityVal">85%</span></label>
+              <input type="range" id="optQuality" min="10" max="100" value="85" />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Width (px)</label>
+              <input type="number" id="optWidth" placeholder="auto" class="input" />
+            </div>
+            <div class="input-group">
+              <label class="input-label">Preset</label>
+              <select class="input" id="optPreset">
+                <option value="none">Custom</option>
+                <option value="web">Web (1200px)</option>
+                <option value="instagram">Instagram Square (1080px)</option>
+                <option value="story">Story / Reels (1080×1920)</option>
+                <option value="thumb">Thumbnail (300px)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="image-actions" style="margin-top:var(--space-lg);">
+            <button class="btn btn--primary btn--full" id="optimizeBtn" disabled>Optimize</button>
+            <button class="btn btn--outline btn--full" id="optimizeDownloadBtn" style="display:none;">Download</button>
+          </div>
+
+          <div id="optimizeInfo" style="margin-top:var(--space-lg); text-align:center; font-size:var(--fs-sm); color:var(--color-text-muted);"></div>
+          <div id="optimizeStatus" style="margin-top:var(--space-lg); text-align:center; min-height:1.5rem; font-size:var(--fs-sm); color:var(--color-text-muted);"></div>
+        </div>
+      </section>
+
+      <!-- Settings section -->
+      <section id="section-settings" class="section hidden" aria-label="Settings">
+        <div class="card card--padded">
+          <h2 class="hero-title" style="font-size:var(--fs-xl); margin-bottom:var(--space-lg);">Settings</h2>
+          <div class="settings-list">
+            <div class="settings-item">
+              <span class="settings-label">Dark mode</span>
+              <button class="settings-toggle" id="toggleDark" role="switch" aria-checked="false"></button>
+            </div>
+            <div class="settings-item">
+              <span class="settings-label">Reduce motion</span>
+              <button class="settings-toggle" id="toggleReduceMotion" role="switch" aria-checked="false"></button>
+            </div>
+            <div class="settings-item">
+              <span class="settings-label">API base URL</span>
+              <input type="text" id="apiBaseInput" class="input" placeholder="https://your-api.onrender.com" />
+            </div>
+            <button class="btn btn--outline btn--full" id="saveApiBtn">Save API URL</button>
+            <button class="btn btn--ghost btn--full" id="resetApiBtn">Reset to default</button>
+            <div style="font-size:var(--fs-xs); color:var(--color-text-muted); margin-top:var(--space-md);">
+              Leave blank to use the current origin (relative). Set to your Render backend URL for production / APK.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals -->
+    <div class="modal-overlay" id="loadingModal">
+      <div class="modal">
+        <div class="modal-body">
+          <div class="progress-card">
+            <div class="loading-spinner"></div>
+            <div class="progress-text" id="loadingTitle">Processing…</div>
+            <div class="progress-sub" id="loadingSub">Please wait</div>
+            <div class="progress-bar" style="margin-top:var(--space-lg);"><div class="progress-bar-fill" id="loadingBar"></div></div>
+          </div>
+          <button class="btn btn--outline btn--full" id="loadingCancel" style="margin-top:var(--space-lg); display:none;">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="resultModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title" id="resultTitle">Result</h3>
+          <button class="modal-close" id="resultClose" aria-label="Close">✕</button>
+        </div>
+        <div class="modal-body" id="resultBody">
+          <!-- dynamic content -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn--outline" id="resultCloseBtn">Close</button>
+          <button class="btn btn--primary" id="resultActionBtn">Done</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+  </div>
+
+  <script type="module">
+    import { API_CONFIG, APIError, api } from './js/api.js';
+    import { initCamera } from './js/camera.js';
+    import { initFaceAnalyzer } from './js/face-analyzer.js';
+    import { initImageEnhancer } from './js/image-enhancer.js';
+    import { initImageOptimizer } from './js/image-optimizer.js';
+    import { initFilters } from './js/filters.js';
+    import { initApp } from './js/app.js';
+
+    // Wire up modules
+    window.addEventListener('DOMContentLoaded', async () => {
+      // Expose api globally for modules that need it
+      window.photoStudioAPI = { API_CONFIG, api, APIError };
+
+      // Register service worker (safe static caching only)
+      if ('serviceWorker' in navigator) {
+        try {
+          await navigator.serviceWorker.register('./service-worker.js');
+          console.log('[SW] Registered');
+        } catch (e) {
+          console.warn('[SW] Registration failed:', e);
+        }
+      }
+
+      await initApp();
+      initCamera();
+      initFaceAnalyzer();
+      initImageEnhancer();
+      initImageOptimizer();
+      initFilters();
+    });
+  </script>
+</body>
+</html>

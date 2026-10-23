@@ -1,0 +1,13 @@
+# Python AI Service (FastAPI) — Lightweight
+fastapi==0.111.0
+uvicorn==0.30.6
+python-multipart==0.0.9
+python-dotenv==1.0.1
+opencv-python-headless==4.10.0.84
+Pillow>=10.4.0
+numpy>=1.26.0
+
+# Optional: Real-ESRGAN for super-resolution (CPU, resource-heavy)
+# Uncomment only if you have sufficient RAM/CPU and want AI upscaling.
+# basicsr==1.4.2
+# realesrgan==0.3.0
